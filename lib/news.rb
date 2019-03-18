@@ -1,9 +1,4 @@
-require 'open-uri'
-require 'nokogiri'
-require 'pry'
-require 'colorize'
-
-class News
+class Combine::News
     attr_accessor :p1, :p2, :p3, :p4, :author, :timestamp, :name, :pos, :height, :weight, :age, :college, :drafted
 
     @@all = []
@@ -23,7 +18,7 @@ class News
     def self.news(player, url)
         doc = Nokogiri::HTML(open(url))
         doc.css(".subsection.feature-stretch").each do |element|
-            new_news = News.new(doc)
+            new_news = Combine::News.new(doc)
             if element.text.include?("no news")
                 new_news.p1 = element.text.strip
                 new_news.p2 = element.text.strip

@@ -1,9 +1,4 @@
-require 'open-uri'
-require 'nokogiri'
-require 'pry'
-require 'colorize'
-
-class CareerStats
+class Combine::CareerStats
     attr_accessor :season, :team, :games, :min, :fgm, :fga, :fgp, :tpm, :tpa, :tpp, :ftm, :fta, :ftp, :offreb, :defreb, :reb, :ast, :to, :stl, :blk, :pf, :pts, :name, :pos, :height, :weight, :age, :college, :drafted
     
     @@all = []
@@ -23,7 +18,7 @@ class CareerStats
     def self.stats(player, url)
         doc = Nokogiri::HTML(open(url))
         doc.css("tbody tr").each do |element|
-            stats = CareerStats.new(doc)
+            stats = Combine::CareerStats.new(doc)
             stats.season = element.css("td")[0].text.to_i
             stats.team = element.css("td")[1].text
             stats.games = element.css("td")[2].text.to_i
@@ -49,7 +44,7 @@ class CareerStats
             self.all << stats
         end
         doc.css("tfoot").each do |element|
-            total = CareerStats.new(doc)
+            total = Combine::CareerStats.new(doc)
             total.season = element.css("td")[0].text
             total.team = element.css("td")[1].text
             total.games = element.css("td")[2].text.to_i

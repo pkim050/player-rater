@@ -1,9 +1,4 @@
-require 'open-uri'
-require 'nokogiri'
-require 'pry'
-require 'colorize'
-
-class Gamelogs
+class Combine::Gamelogs
     attr_accessor :date, :opp, :score, :min, :fgm, :fga, :fgp, :tpm, :tpa, :tpp, :ftm, :fta, :ftp, :offreb, :defreb, :reb, :ast, :to, :stl, :blk, :pf, :pts, :name, :pos, :height, :weight, :age, :college, :drafted
     
     @@all = []
@@ -32,7 +27,7 @@ class Gamelogs
             @drafted = element.text if element.text.include?("Drafted")
         end
         doc.css("tbody tr").each do |element|
-            gamelog = Gamelogs.new(doc)
+            gamelog = Combine::Gamelogs.new(doc)
             gamelog.date = element.css("td")[0].text
             gamelog.opp = element.css("td")[1].text
             gamelog.score = element.css("td")[2].text

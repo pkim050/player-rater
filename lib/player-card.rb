@@ -1,8 +1,4 @@
-require 'open-uri'
-require 'nokogiri'
-require 'pry'
-
-class PlayerCard
+class Combine::PlayerCard
     attr_accessor :name, :pos, :height, :weight, :age, :college, :drafted, :news, :stats, :gamelog
 
     @@all = [] #Collects are links

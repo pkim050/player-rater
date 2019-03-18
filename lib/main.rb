@@ -1,14 +1,4 @@
-require 'open-uri'
-require 'nokogiri'
-require 'pry'
-require 'colorize'
-require_relative "./stats-scraper"
-require_relative "./player-card"
-require_relative "./news"
-require_relative "./gamelogs"
-require_relative "./career-stats"
-
-class Main
+class Combine::Main
     attr_accessor :url_list, :rank_list
 
     def initialize
@@ -27,7 +17,7 @@ class Main
         puts "_____________________________________________________________________________________________________________________________"
         puts "| Rank |                  Player                  |  FG%  |  FT%  |  3PM  |  REB  |  AST  |  STL  |  BLK  |  PTS  | OVERALL |"
         puts "|------|------------------------------------------|-------|-------|-------|-------|-------|-------|-------|-------|---------|"
-        stats = StatsScraper.scrape
+        stats = Combine::StatsScraper.scrape
         if sort == "name asc"
             stats = stats.sort_by {|cat| cat.name}
         elsif sort == "name desc"
@@ -93,7 +83,7 @@ class Main
             puts "| #{index_v2} | #{name} | #{fg} | #{ft} | #{tpm} | #{reb} | #{ast} | #{stl} | #{blk} | #{pts} | #{ovr} |"
         end
         puts "|______|__________________________________________|_______|_______|_______|_______|_______|_______|_______|_______|_________|"
-        StatsScraper.clear
+        Combine::StatsScraper.clear
     end
 
     def space_filler(string, max)
@@ -115,12 +105,12 @@ class Main
             temp = @rank_list.key(input.to_i)
             url = @url_list[temp]
             system "clear"
-            player = PlayerCard.new(url)
+            player = Combine::PlayerCard.new(url)
             player_display(player, url)
         elsif @rank_list.has_key?(input)
             url = @url_list[input]
             system "clear"
-            player = PlayerCard.new(url)
+            player = Combine::PlayerCard.new(url)
             player_display(player, url)
         elsif input == "name asc" || input == "name desc" || input == "fg asc" || input == "fg desc" || input == "ft asc" || input == "ft desc" || input == "tpm asc" || input == "tpm desc" || input == "reb asc" || input == "reb desc" || input == "ast asc" || input == "ast desc" || input == "stl asc" || input == "stl desc" || input == "blk asc" || input == "blk desc" || input == "pts asc" || input == "pts desc" || input == "pr asc" || input == "pr desc"
             display(input)
@@ -211,17 +201,17 @@ class Main
         if input == "news"
             temp = url.split("/players/")
             temp2 = "#{temp[0]}/#{input}/#{temp[1]}"
-            player_news = News.news(player, temp2)
+            player_news = Combine::News.news(player, temp2)
             display_news(player_news, url)
         elsif input == "stats"
             temp = url.split("/players/")
             temp2 = "#{temp[0]}/#{input}/#{temp[1]}"
-            player_stats = CareerStats.stats(player, temp2)
+            player_stats = Combine::CareerStats.stats(player, temp2)
             display_stats(player_stats, url)
         elsif input == "games"
             temp = url.split("/players/")
             temp2 = "#{temp[0]}/#{input}/#{temp[1]}"
-            player_gamelog = Gamelogs.games(player, temp2)
+            player_gamelog = Combine::Gamelogs.games(player, temp2)
             display_gamelog(player_gamelog, url)
         elsif input == "back"
             display
@@ -262,12 +252,12 @@ class Main
         puts ""
         puts "Type 'back' to go back to the overview page"
         puts "Or type 'exit' to terminate."
-        News.clear
+        Combine::News.clear
         input = gets.chomp.downcase
 
         if input == "back"
             system "clear"
-            player = PlayerCard.new(url)
+            player = Combine::PlayerCard.new(url)
             player_display(player, url)
         elsif input == "exit"
             system "clear"
@@ -323,12 +313,12 @@ class Main
         puts ""
         puts "Type 'back' to go back to the overview page"
         puts "Or type 'exit' to terminate."
-        CareerStats.clear
+        Combine::CareerStats.clear
         input = gets.chomp.downcase
 
         if input == "back"
             system "clear"
-            player = PlayerCard.new(url)
+            player = Combine::PlayerCard.new(url)
             player_display(player, url)
         elsif input == "exit"
             system "clear"
@@ -384,12 +374,12 @@ class Main
         puts ""
         puts "Type 'back' to go back to the overview page"
         puts "Or type 'exit' to terminate."
-        Gamelogs.clear
+        Combine::Gamelogs.clear
         input = gets.chomp.downcase
 
         if input == "back"
             system "clear"
-            player = PlayerCard.new(url)
+            player = Combine::PlayerCard.new(url)
             player_display(player, url)
         elsif input == "exit"
             system "clear"
@@ -408,6 +398,3 @@ class Main
         menu
     end
 end
-
-test = Main.new
-test.main

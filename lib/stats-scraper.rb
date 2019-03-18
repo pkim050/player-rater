@@ -1,9 +1,4 @@
-require 'open-uri'
-require 'nokogiri'
-require 'pry'
-require 'colorize'
-
-class StatsScraper
+class Combine::StatsScraper
     attr_accessor :name, :fg, :ft, :tpm, :reb, :ast, :stl, :blk, :pts, :ovr, :card
 
     @@all = [] #Collects each player
@@ -13,7 +8,7 @@ class StatsScraper
         chart = doc.css("tbody")
         chart.css("tr").each do |element|
             #player_rank = element.css("td").first.text     Does not matter since if you sort by any categories, numbers would change
-            player = StatsScraper.new
+            player = Combine::StatsScraper.new
             player.name = element.css(".player-label").text.strip
             player.card = element.css(".player-label a").first['href']
             player.fg = element.css("td")[2].text.to_f
