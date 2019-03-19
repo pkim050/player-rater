@@ -1,5 +1,5 @@
 class Combine::StatsScraper
-    attr_accessor :name, :fg, :ft, :tpm, :reb, :ast, :stl, :blk, :pts, :ovr, :card
+    attr_accessor :name, :fg, :ft, :tpm, :reb, :ast, :stl, :blk, :pts, :ovr, :card, :indicator
 
     @@all = [] #Collects each player
 
@@ -31,5 +31,11 @@ class Combine::StatsScraper
 
     def self.clear
         self.all.clear
+    end
+
+    def self.statsscraper(num = 1)
+        #arr = []
+        self.all.select {|element| element.tpm >= num}
+        #arr
     end
 end

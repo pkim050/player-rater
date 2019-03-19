@@ -35,6 +35,7 @@ class Combine::PlayerCard
                     p2: news_p4,
                     author: author,
                     timestamp: timestamp
+                
                 }
                 @@all << element.css(".view-more.pull-right")[0]['href']
 
@@ -71,30 +72,37 @@ class Combine::PlayerCard
                     @gamelog = element.css("td").text
                 else
                     element.css("tbody tr").each do |element2|
-                        game = element2.css("td")[0].text
-                        opp = element2.css("td")[1].text
-                        score = element2.css("td")[2].text
-                        min = element2.css("td")[3].text.to_i
-                        reb = element2.css("td")[4].text.to_i
-                        ast = element2.css("td")[5].text.to_i
-                        to = element2.css("td")[6].text.to_i
-                        stl = element2.css("td")[7].text.to_i
-                        blk = element2.css("td")[8].text.to_i
-                        pf = element2.css("td")[9].text.to_i
-                        pts = element2.css("td")[-1].text.to_i
-                        @gamelog << {
-                            game: game,
-                            opponent: opp,
-                            score: score,
-                            minutes: min,
-                            rebounds: reb,
-                            assists: ast,
-                            turnovers: to,
-                            steals: stl,
-                            blocks: blk,
-                            personal_fouls: pf,
-                            points: pts
-                        }
+                        if element2.css("td")[0].text.include?("Player")
+                            game = element2.css("td")[0].text
+                            @gamelog << {
+                                game: game
+                            }
+                        else
+                            game = element2.css("td")[0].text
+                            opp = element2.css("td")[1].text
+                            score = element2.css("td")[2].text
+                            min = element2.css("td")[3].text.to_i
+                            reb = element2.css("td")[4].text.to_i
+                            ast = element2.css("td")[5].text.to_i
+                            to = element2.css("td")[6].text.to_i
+                            stl = element2.css("td")[7].text.to_i
+                            blk = element2.css("td")[8].text.to_i
+                            pf = element2.css("td")[9].text.to_i
+                            pts = element2.css("td")[-1].text.to_i
+                            @gamelog << {
+                                game: game,
+                                opponent: opp,
+                                score: score,
+                                minutes: min,
+                                rebounds: reb,
+                                assists: ast,
+                                turnovers: to,
+                                steals: stl,
+                                blocks: blk,
+                                personal_fouls: pf,
+                                points: pts
+                            }
+                        end
                     end
                 end
 

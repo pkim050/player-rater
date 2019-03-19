@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
-require_relative '../lib/combine.rb'
+
+require "./lib/combine.rb"
+#require_relative '../lib/combine.rb'
 
 Combine::Main.new.main

@@ -1,5 +1,5 @@
-require "bundler/setup"
-require "./player-rater"
+#require "bundler/setup"
+require "./lib/combine.rb"
 
 require "irb"
 IRB.start

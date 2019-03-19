@@ -113,6 +113,7 @@ class Combine::Main
             player = Combine::PlayerCard.new(url)
             player_display(player, url)
         elsif input == "name asc" || input == "name desc" || input == "fg asc" || input == "fg desc" || input == "ft asc" || input == "ft desc" || input == "tpm asc" || input == "tpm desc" || input == "reb asc" || input == "reb desc" || input == "ast asc" || input == "ast desc" || input == "stl asc" || input == "stl desc" || input == "blk asc" || input == "blk desc" || input == "pts asc" || input == "pts desc" || input == "pr asc" || input == "pr desc"
+            system "clear"
             display(input)
         elsif input == "exit"
             system "clear"
@@ -120,6 +121,7 @@ class Combine::Main
             exit
         else
             system "clear"
+            puts ""
             puts "Error: Invalid input, try again..."
         end
         menu
@@ -135,16 +137,16 @@ class Combine::Main
         puts "==========================================================================================="
         puts "Overview".bold
         puts "==========================================================================================="
-        puts "Player News"
+        puts "Player News".bold
         puts ""
         if player.news[0].include?("no news")
             puts "#{player.news[0]}"
         else
-            puts "#{player.news[0][:p1_bold]}"
+            puts "#{player.news[0][:p1_bold]}".bold
             puts ""
             puts "#{player.news[0][:p1]}"
             puts ""
-            puts "#{player.news[0][:p2_bold]}"
+            puts "#{player.news[0][:p2_bold]}".bold
             puts ""
             puts "#{player.news[0][:p2]}"
             puts ""
@@ -177,21 +179,26 @@ class Combine::Main
         puts "______________________________________________________________________________________"
         puts "|     GAME     |   OPP   |    SCORE    | MIN | REB | AST | TO | STL | BLK | PF | PTS |"
         puts "|--------------|---------|-------------|-----|-----|-----|----|-----|-----|----|-----|"
-        player.gamelog.each do |element2|
-            game = space_filler(element2[:game], 13)
-            opp = space_filler(element2[:opponent], 8)
-            score = space_filler(element2[:score], 12)
-            min = space_filler(element2[:minutes].to_s, 4)
-            reb = space_filler(element2[:rebounds].to_s, 4)
-            ast = space_filler(element2[:assists].to_s, 4)
-            to = space_filler(element2[:turnovers].to_s, 3)
-            stl = space_filler(element2[:steals].to_s, 4)
-            blk = space_filler(element2[:blocks].to_s, 4)
-            pf = space_filler(element2[:personal_fouls].to_s, 3)
-            pts = space_filler(element2[:points].to_s, 4)
-            puts "| #{game} | #{opp} | #{score} | #{min} | #{reb} | #{ast} | #{to} | #{stl} | #{blk} | #{pf} | #{pts} |"
+        if player.gamelog.include?("Player")
+            puts "|                #{player.gamelog}              |"
+            puts "|____________________________________________________________________________________|"
+        else
+            player.gamelog.each do |element2|
+                game = space_filler(element2[:game], 13)
+                opp = space_filler(element2[:opponent], 8)
+                score = space_filler(element2[:score], 12)
+                min = space_filler(element2[:minutes].to_s, 4)
+                reb = space_filler(element2[:rebounds].to_s, 4)
+                ast = space_filler(element2[:assists].to_s, 4)
+                to = space_filler(element2[:turnovers].to_s, 3)
+                stl = space_filler(element2[:steals].to_s, 4)
+                blk = space_filler(element2[:blocks].to_s, 4)
+                pf = space_filler(element2[:personal_fouls].to_s, 3)
+                pts = space_filler(element2[:points].to_s, 4)
+                puts "| #{game} | #{opp} | #{score} | #{min} | #{reb} | #{ast} | #{to} | #{stl} | #{blk} | #{pf} | #{pts} |"
+            end
+            puts "|______________|_________|_____________|_____|_____|_____|____|_____|_____|____|_____|"
         end
-        puts "|______________|_________|_____________|_____|_____|_____|____|_____|_____|____|_____|"
         puts ""
         puts "Type 'news' for more news. Type 'stats' for more stats. Type 'games' for more game logs."
         puts "Or type 'back' to go back to the main page."
@@ -199,21 +206,25 @@ class Combine::Main
         input = gets.chomp.downcase
 
         if input == "news"
+            system "clear"
             temp = url.split("/players/")
             temp2 = "#{temp[0]}/#{input}/#{temp[1]}"
             player_news = Combine::News.news(player, temp2)
             display_news(player_news, url)
         elsif input == "stats"
+            system "clear"
             temp = url.split("/players/")
             temp2 = "#{temp[0]}/#{input}/#{temp[1]}"
             player_stats = Combine::CareerStats.stats(player, temp2)
             display_stats(player_stats, url)
         elsif input == "games"
+            system "clear"
             temp = url.split("/players/")
             temp2 = "#{temp[0]}/#{input}/#{temp[1]}"
             player_gamelog = Combine::Gamelogs.games(player, temp2)
             display_gamelog(player_gamelog, url)
         elsif input == "back"
+            system "clear"
             display
             menu
         elsif input == "exit"
@@ -222,13 +233,13 @@ class Combine::Main
             exit
         else
             system "clear"
+            puts ""
             puts "Error: Invalid input, try again..."
-            display player_display(player, url)
+            player_display(player, url)
         end
     end
     
     def display_news(player, url)
-        system "clear"
         puts "#{player[0].name}"
         puts "#{player[0].pos}"
         puts ""
@@ -238,11 +249,11 @@ class Combine::Main
         puts "News".bold
         puts "================================================================================"
         player.each do |element|
-            puts "#{element.p1}"
+            puts "#{element.p1}".bold
             puts ""
             puts "#{element.p2}"
             puts ""
-            puts "#{element.p3}"
+            puts "#{element.p3}".bold
             puts ""
             puts "#{element.p4}"
             puts ""
@@ -252,26 +263,28 @@ class Combine::Main
         puts ""
         puts "Type 'back' to go back to the overview page"
         puts "Or type 'exit' to terminate."
-        Combine::News.clear
+        #Combine::News.clear
         input = gets.chomp.downcase
 
         if input == "back"
+            Combine::News.clear
             system "clear"
             player = Combine::PlayerCard.new(url)
             player_display(player, url)
         elsif input == "exit"
+            Combine::News.clear
             system "clear"
             puts "Goodbye."
             exit
         else
             system "clear"
+            puts ""
             puts "Error: Invalid input, try again..."
             display_news(player, url)
         end
     end
 
     def display_stats(player, url)
-        system "clear"
         puts "#{player[0].name}"
         puts "#{player[0].pos}"
         puts ""
@@ -313,26 +326,28 @@ class Combine::Main
         puts ""
         puts "Type 'back' to go back to the overview page"
         puts "Or type 'exit' to terminate."
-        Combine::CareerStats.clear
+        #Combine::CareerStats.clear
         input = gets.chomp.downcase
 
         if input == "back"
+            Combine::CareerStats.clear
             system "clear"
             player = Combine::PlayerCard.new(url)
             player_display(player, url)
         elsif input == "exit"
+            Combine::CareerStats.clear
             system "clear"
             puts "Goodbye."
             exit
         else
             system "clear"
+            puts ""
             puts "Error: Invalid input, try again..."
             display_stats(player, url)
         end
     end
 
     def display_gamelog(player, url)
-        system "clear"
         puts "#{player[0].name}"
         puts "#{player[0].pos}"
         puts ""
@@ -345,54 +360,65 @@ class Combine::Main
         puts "______________________________________________________________________________________________________________________________________________________________"
         puts "|     Date     |   OPP   |    SCORE    | MIN | FGM | FGA |  FG%  | 3PM | 3PA |  3P%  | FTM | FTA |  FT%  | OFF | DEF | REB | AST | TO | STL | BLK | PF | PTS |"
         puts "|--------------|---------|-------------|-----|-----|-----|-------|-----|-----|-------|-----|-----|-------|-----|-----|-----|-----|----|-----|-----|----|-----|"
+        counter = 0
         player.each do |element|
-            date = space_filler(element.date, 13)
-            opp = space_filler(element.opp, 8)
-            score = space_filler(element.score, 12)
-            min = space_filler(element.min.to_s, 4)
-            fgm = space_filler(element.fgm.to_s, 4)
-            fga = space_filler(element.fga.to_s, 4)
-            fgp = space_filler(element.fgp.to_s, 6)
-            tpm = space_filler(element.tpm.to_s, 4)
-            tpa = space_filler(element.tpa.to_s, 4)
-            tpp = space_filler(element.tpp.to_s, 6)
-            ftm = space_filler(element.ftm.to_s, 4)
-            fta = space_filler(element.fta.to_s, 4)
-            ftp = space_filler(element.ftp.to_s, 6)
-            offreb = space_filler(element.offreb.to_s, 4)
-            defreb = space_filler(element.defreb.to_s, 4)
-            reb = space_filler(element.reb.to_s, 4)
-            ast = space_filler(element.ast.to_s, 4)
-            to = space_filler(element.to.to_s, 3)
-            stl = space_filler(element.stl.to_s, 4)
-            blk = space_filler(element.blk.to_s, 4)
-            pf = space_filler(element.pf.to_s, 3)
-            pts = space_filler(element.pts.to_s, 4)
-            puts "| #{date} | #{opp} | #{score} | #{min} | #{fgm} | #{fga} | #{fgp} | #{tpm} | #{tpa} | #{tpp} | #{ftm} | #{fta} | #{ftp} | #{offreb} | #{defreb} | #{reb} | #{ast} | #{to} | #{stl} | #{blk} | #{pf} | #{pts} |"
+            if element.date.include?("Player")
+                puts "|                                               #{element.date}                                                       |"
+                puts "|____________________________________________________________________________________________________________________________________________________________|"
+                counter += 1
+            else
+                date = space_filler(element.date, 13)
+                opp = space_filler(element.opp, 8)
+                score = space_filler(element.score, 12)
+                min = space_filler(element.min.to_s, 4)
+                fgm = space_filler(element.fgm.to_s, 4)
+                fga = space_filler(element.fga.to_s, 4)
+                fgp = space_filler(element.fgp.to_s, 6)
+                tpm = space_filler(element.tpm.to_s, 4)
+                tpa = space_filler(element.tpa.to_s, 4)
+                tpp = space_filler(element.tpp.to_s, 6)
+                ftm = space_filler(element.ftm.to_s, 4)
+                fta = space_filler(element.fta.to_s, 4)
+                ftp = space_filler(element.ftp.to_s, 6)
+                offreb = space_filler(element.offreb.to_s, 4)
+                defreb = space_filler(element.defreb.to_s, 4)
+                reb = space_filler(element.reb.to_s, 4)
+                ast = space_filler(element.ast.to_s, 4)
+                to = space_filler(element.to.to_s, 3)
+                stl = space_filler(element.stl.to_s, 4)
+                blk = space_filler(element.blk.to_s, 4)
+                pf = space_filler(element.pf.to_s, 3)
+                pts = space_filler(element.pts.to_s, 4)
+                puts "| #{date} | #{opp} | #{score} | #{min} | #{fgm} | #{fga} | #{fgp} | #{tpm} | #{tpa} | #{tpp} | #{ftm} | #{fta} | #{ftp} | #{offreb} | #{defreb} | #{reb} | #{ast} | #{to} | #{stl} | #{blk} | #{pf} | #{pts} |"
+            end
         end
-        puts "|______________|_________|_____________|_____|_____|_____|_______|_____|_____|_______|_____|_____|_______|_____|_____|_____|_____|____|_____|_____|____|_____|"
+        puts "|______________|_________|_____________|_____|_____|_____|_______|_____|_____|_______|_____|_____|_______|_____|_____|_____|_____|____|_____|_____|____|_____|" if counter == 0
         puts ""
         puts "Type 'back' to go back to the overview page"
         puts "Or type 'exit' to terminate."
-        Combine::Gamelogs.clear
+        #Combine::Gamelogs.clear
         input = gets.chomp.downcase
 
         if input == "back"
+            Combine::Gamelogs.clear
             system "clear"
             player = Combine::PlayerCard.new(url)
             player_display(player, url)
         elsif input == "exit"
+            Combine::Gamelogs.clear
             system "clear"
             puts "Goodbye."
             exit
         else
             system "clear"
+            puts ""
             puts "Error: Invalid input, try again..."
             display_gamelog(player, url)
         end
     end
     
     def main
+        #self
         greeting
         display
         menu
