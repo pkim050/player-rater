@@ -20,7 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+1. Close repository: https://github.com/pkim050/player-rater.
+2. Type ./bin/player-rater on terminal to run the program.
 
 ## Development
 
